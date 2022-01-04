@@ -1,0 +1,70 @@
+---
+title: "Diffusion"
+output: html_document
+---
+```{r}
+library(gifski)
+```
+
+```{r, animation.hook="gifski"}
+n = 20
+m <- matrix(nrow = n, ncol = n, data =seq(1,100)*0)
+
+for(i in 1:5){
+  for(j in 1:5){
+    m[n/2 + i, n/2 + j] <- 1
+  }
+}
+image(m)
+
+# Animation
+for(k in 1:100){
+  col = 1
+  row = 1
+  for(i in m){
+    if(row > 20){
+      row = 1
+      col = col + 1
+    }
+    
+    if(i == 1){
+      random = round(runif(1, 1, 5), 0)
+      # Go up
+      if(random == 1 & row > 1){
+        if(m[row-1, col] != 1){
+          m[row - 1, col] = 1
+          m[row, col] = 0
+        }
+      }
+      # Go right
+      if(random == 2 & col < n){
+        if(m[row, col+1] != 1){
+          m[row, col+1] = 1
+          m[row, col] = 0
+        }
+      }
+      # Go down
+      if(random == 3 & row < n){
+        if(m[row+1, col] != 1){
+          m[row+1, col] = 1
+          m[row, col] = 0
+        }
+      }
+      # Go left
+      if(random == 4 & col > 1){
+        if(m[row, col-1] != 1){
+          m[row, col-1] = 1
+          m[row, col] = 0
+        }
+      }
+      # Stay
+      if(random == 5){
+      }
+      
+    }
+    row = row + 1
+  }
+  image(m)
+}
+```
+
